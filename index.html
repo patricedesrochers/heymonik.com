@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monik — AI Desktop Automation for Small Business Owners</title>
+<meta name="description" content="You didn't start your business to do paperwork. Monik learns your repetitive tasks, runs them while you're away, and documents everything — so you can focus on growing your business.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0e0e10;
+  --bg2: #141416;
+  --surface: #1a1a1e;
+  --surface2: #232227;
+  --border: #2e2d32;
+  --copper: #C4956A;
+  --copper-hi: #D4A87C;
+  --copper-glow: rgba(196, 149, 106, 0.15);
+  --copper-deep: #A87B52;
+  --amber: #D4A04A;
+  --green: #7A9A6A;
+  --rose: #C85A5A;
+  --text: #f0eeeb;
+  --text-soft: #b0ada8;
+  --text-dim: #6b6965;
+  --serif: 'DM Serif Display', Georgia, serif;
+  --sans: 'Outfit', -apple-system, sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+
+body::before {
+  content: ''; position: fixed; inset: 0; z-index: 9999; pointer-events: none; opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.15s; }
+.reveal-delay-2 { transition-delay: 0.3s; }
+.reveal-delay-3 { transition-delay: 0.45s; }
+.reveal-delay-4 { transition-delay: 0.6s; }
+
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+/* ── Nav ────────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 16px 0;
+  background: rgba(14, 14, 16, 0.85); backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(46, 45, 50, 0.5); transition: padding 0.3s;
+}
+nav.scrolled { padding: 10px 0; }
+.nav-inner { display: flex; align-items: center; justify-content: space-between; }
+.nav-logo {
+  display: flex; align-items: center; gap: 10px; text-decoration: none;
+}
+.nav-logo img { height: 32px; width: auto; filter: sepia(1) saturate(2) hue-rotate(340deg) brightness(0.85); }
+.nav-logo-text { font-family: var(--serif); font-size: 1.5rem; color: var(--copper); letter-spacing: -0.03em; }
+.nav-logo-sub { font-family: var(--sans); font-size: 0.72rem; font-weight: 300; color: var(--text-dim); letter-spacing: 0.14em; text-transform: uppercase; }
+.nav-links { display: flex; gap: 28px; align-items: center; }
+.nav-links a { color: var(--text-soft); text-decoration: none; font-size: 0.88rem; font-weight: 400; transition: color 0.2s; }
+.nav-links a:hover { color: var(--copper); }
+.btn-nav {
+  background: var(--copper); color: #0e0e10; padding: 10px 22px; border-radius: 8px;
+  font-weight: 600; font-size: 0.88rem; text-decoration: none; transition: all 0.3s;
+}
+.btn-nav:hover { background: var(--copper-hi); transform: translateY(-1px); box-shadow: 0 4px 20px var(--copper-glow); }
+
+/* ── Hero ───────────────────────────────────────── */
+.hero {
+  padding: 160px 0 100px; text-align: center; position: relative;
+  overflow: hidden; min-height: 100vh; display: flex; align-items: center;
+}
+.hero-video {
+  position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%;
+  transform: translate(-50%, -50%); z-index: 0; object-fit: cover;
+  opacity: 0.15; filter: grayscale(40%) brightness(0.6);
+}
+.hero-overlay {
+  position: absolute; inset: 0; z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(14,14,16,0.7) 0%, rgba(14,14,16,0.4) 30%, rgba(14,14,16,0.5) 70%, rgba(14,14,16,0.95) 100%),
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(196,149,106,0.07), transparent 70%);
+}
+.hero > .container { position: relative; z-index: 2; }
+.hero-logo { margin-bottom: 8px; line-height: 1; }
+.hero-logo img { height: 100px; width: auto; filter: sepia(1) saturate(2) hue-rotate(340deg) brightness(0.85); }
+.hero-logo-sub { font-size: 0.85rem; color: var(--text-dim); letter-spacing: 0.2em; text-transform: uppercase; font-weight: 300; margin-bottom: 40px; }
+.hero h1 {
+  font-family: var(--serif); font-size: clamp(2rem, 4.5vw, 3.4rem);
+  line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 24px;
+  max-width: 780px; margin-left: auto; margin-right: auto;
+}
+.hero h1 em { font-style: normal; color: var(--copper); }
+.hero-sub {
+  font-size: clamp(1rem, 1.8vw, 1.15rem); color: var(--text-soft);
+  max-width: 620px; margin: 0 auto 48px; font-weight: 300; line-height: 1.8;
+}
+.hero-ctas { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.btn-primary {
+  background: var(--copper); color: #0e0e10; padding: 16px 36px; border-radius: 10px;
+  font-weight: 600; font-size: 1.05rem; text-decoration: none; transition: all 0.3s; font-family: var(--sans);
+}
+.btn-primary:hover { background: var(--copper-hi); transform: translateY(-2px); box-shadow: 0 8px 30px var(--copper-glow); }
+.btn-secondary {
+  background: transparent; color: var(--text-soft); padding: 16px 36px; border-radius: 10px;
+  font-weight: 500; font-size: 1.05rem; text-decoration: none; border: 1px solid var(--border); transition: all 0.3s; font-family: var(--sans);
+}
+.btn-secondary:hover { border-color: var(--copper); color: var(--copper); }
+
+/* ── Mockup ─────────────────────────────────────── */
+.hero-visual { margin-top: 64px; max-width: 960px; margin-left: auto; margin-right: auto; }
+.mockup {
+  background: var(--surface); border-radius: 16px; border: 1px solid var(--border);
+  padding: 20px 28px; text-align: left;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.03);
+}
+.mockup-bar { display: flex; gap: 8px; margin-bottom: 16px; }
+.mockup-dot { width: 12px; height: 12px; border-radius: 50%; }
+.mockup-dot:nth-child(1) { background: var(--rose); }
+.mockup-dot:nth-child(2) { background: var(--amber); }
+.mockup-dot:nth-child(3) { background: var(--green); }
+.mockup-content { display: grid; grid-template-columns: 170px 1fr; gap: 16px; min-height: 240px; }
+.mockup-sidebar { background: var(--surface2); border-radius: 10px; padding: 14px; }
+.mockup-sidebar-item { padding: 7px 10px; border-radius: 6px; font-size: 0.75rem; color: var(--text-dim); margin-bottom: 3px; display: flex; align-items: center; gap: 6px; }
+.mockup-sidebar-item.active { background: var(--copper); color: #0e0e10; font-weight: 600; }
+.mockup-main { display: flex; flex-direction: column; gap: 10px; }
+.mockup-status {
+  background: linear-gradient(135deg, rgba(196,149,106,0.1), rgba(196,149,106,0.04));
+  border: 1px solid rgba(196,149,106,0.2); border-radius: 10px;
+  padding: 12px 18px; display: flex; align-items: center; justify-content: space-between;
+}
+.mockup-status-text { font-size: 0.8rem; color: var(--copper); font-weight: 500; }
+.mockup-status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--copper); animation: pulse 2s ease infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.mockup-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; flex: 1; }
+.mockup-card { background: var(--bg2); border-radius: 8px; padding: 12px; border: 1px solid var(--border); }
+.mockup-card-label { font-size: 0.6rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; }
+.mockup-card-value { font-size: 1.4rem; font-weight: 700; margin-top: 2px; }
+
+/* ── Pain / Empathy ─────────────────────────────── */
+.pain { padding: 120px 0; }
+.pain-inner { max-width: 760px; margin: 0 auto; text-align: center; }
+.pain-tag { font-size: 0.75rem; color: var(--rose); text-transform: uppercase; letter-spacing: 0.15em; font-weight: 600; margin-bottom: 16px; }
+.pain h2 { font-family: var(--serif); font-size: clamp(1.8rem, 3.5vw, 2.6rem); line-height: 1.2; margin-bottom: 32px; letter-spacing: -0.02em; }
+.pain-items { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left; margin-bottom: 48px; }
+.pain-item {
+  padding: 24px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  border-left: 3px solid var(--rose); transition: all 0.3s;
+}
+.pain-item:hover { border-left-color: var(--copper); }
+.pain-item h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 6px; }
+.pain-item p { color: var(--text-soft); font-size: 0.88rem; line-height: 1.7; font-weight: 300; }
+
+/* ── Imagine / Aspiration ───────────────────────── */
+.imagine { padding: 100px 0 120px; background: var(--bg2); position: relative; overflow: hidden; }
+.imagine::before {
+  content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 600px; height: 600px; border-radius: 50%;
+  background: var(--copper); opacity: 0.025; filter: blur(150px);
+}
+.imagine-inner { max-width: 760px; margin: 0 auto; text-align: center; position: relative; }
+.imagine-tag { font-size: 0.75rem; color: var(--copper); text-transform: uppercase; letter-spacing: 0.15em; font-weight: 600; margin-bottom: 16px; }
+.imagine h2 { font-family: var(--serif); font-size: clamp(1.8rem, 3.5vw, 2.6rem); line-height: 1.2; margin-bottom: 28px; letter-spacing: -0.02em; }
+.imagine-text { color: var(--text-soft); font-size: 1.1rem; line-height: 1.9; font-weight: 300; margin-bottom: 20px; }
+.imagine-quote {
+  font-family: var(--serif); font-size: 1.4rem; color: var(--copper);
+  font-style: italic; padding: 32px 0; line-height: 1.5;
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  margin: 40px 0;
+}
+
+/* ── Solution bridge ────────────────────────────── */
+.solution { padding: 100px 0; }
+.solution-inner { max-width: 760px; margin: 0 auto; text-align: center; }
+.solution-tag { font-size: 0.75rem; color: var(--green); text-transform: uppercase; letter-spacing: 0.15em; font-weight: 600; margin-bottom: 16px; }
+.solution h2 { font-family: var(--serif); font-size: clamp(1.8rem, 3.5vw, 2.6rem); line-height: 1.2; margin-bottom: 24px; letter-spacing: -0.02em; }
+.solution p { color: var(--text-soft); font-size: 1.05rem; line-height: 1.8; font-weight: 300; }
+
+/* ── How it works ───────────────────────────────── */
+.how { padding: 120px 0; background: var(--bg2); }
+.section-tag { font-size: 0.75rem; color: var(--copper); text-transform: uppercase; letter-spacing: 0.15em; font-weight: 600; text-align: center; margin-bottom: 16px; }
+.section-title { font-family: var(--serif); font-size: clamp(2rem, 4vw, 2.8rem); text-align: center; margin-bottom: 64px; letter-spacing: -0.02em; }
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+.step {
+  text-align: center; padding: 36px 28px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 16px; transition: all 0.4s; position: relative;
+}
+.step:hover { border-color: var(--copper); transform: translateY(-6px); box-shadow: 0 20px 60px var(--copper-glow); }
+.step-number {
+  width: 44px; height: 44px; border-radius: 50%; background: var(--copper); color: #0e0e10;
+  font-weight: 700; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;
+}
+.step-icon { font-size: 2.2rem; margin-bottom: 14px; }
+.step h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 10px; }
+.step p { color: var(--text-soft); font-size: 0.9rem; line-height: 1.7; font-weight: 300; }
+
+/* ── Features ───────────────────────────────────── */
+.features { padding: 120px 0; }
+.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.feature {
+  padding: 32px 24px; border-radius: 14px; background: var(--surface);
+  border: 1px solid var(--border); transition: all 0.4s;
+}
+.feature:hover { border-color: rgba(196,149,106,0.3); transform: translateY(-4px); }
+.feature-icon { font-size: 1.8rem; margin-bottom: 14px; display: block; }
+.feature h3 { font-size: 1rem; font-weight: 600; margin-bottom: 8px; }
+.feature p { color: var(--text-soft); font-size: 0.88rem; line-height: 1.7; font-weight: 300; }
+
+/* ── Download ───────────────────────────────────── */
+.download { padding: 100px 0; background: var(--bg2); }
+.download-inner { max-width: 640px; margin: 0 auto; text-align: center; }
+.download-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 40px; }
+.dl-btn {
+  display: flex; align-items: center; gap: 14px; padding: 18px 32px;
+  border-radius: 12px; text-decoration: none; transition: all 0.3s; min-width: 240px;
+}
+.dl-btn-win { background: var(--copper); color: #0e0e10; }
+.dl-btn-win:hover { background: var(--copper-hi); transform: translateY(-2px); box-shadow: 0 8px 30px var(--copper-glow); }
+.dl-btn-mac { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+.dl-btn-mac:hover { border-color: var(--copper); transform: translateY(-2px); }
+.dl-icon { font-size: 1.8rem; }
+.dl-text { text-align: left; }
+.dl-text-main { font-weight: 600; font-size: 1rem; }
+.dl-text-sub { font-size: 0.75rem; opacity: 0.7; }
+.download-note { margin-top: 20px; color: var(--text-dim); font-size: 0.8rem; }
+
+/* ── Pricing ────────────────────────────────────── */
+.pricing { padding: 120px 0; }
+.pricing-toggle { display: flex; justify-content: center; gap: 8px; margin-bottom: 48px; }
+.toggle-btn {
+  padding: 10px 24px; border-radius: 8px; border: 1px solid var(--border);
+  background: transparent; color: var(--text-soft); font-family: var(--sans);
+  font-size: 0.9rem; cursor: pointer; transition: all 0.3s;
+}
+.toggle-btn.active { background: var(--copper); color: #0e0e10; border-color: var(--copper); font-weight: 600; }
+.pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.price-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+  padding: 36px 28px; position: relative; transition: all 0.4s;
+}
+.price-card:hover { transform: translateY(-4px); }
+.price-card.popular { border-color: var(--copper); box-shadow: 0 0 0 1px var(--copper), 0 20px 60px var(--copper-glow); }
+.price-card.popular::before {
+  content: 'Most Popular'; position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+  background: var(--copper); color: #0e0e10; padding: 4px 16px; border-radius: 100px;
+  font-size: 0.75rem; font-weight: 700;
+}
+.price-name { font-size: 1.1rem; font-weight: 600; margin-bottom: 4px; }
+.price-desc { color: var(--text-dim); font-size: 0.85rem; margin-bottom: 20px; }
+.price-amount { font-family: var(--serif); font-size: 2.8rem; letter-spacing: -0.03em; }
+.price-amount span { font-family: var(--sans); font-size: 1rem; color: var(--text-dim); font-weight: 300; }
+.price-features { list-style: none; margin: 24px 0; }
+.price-features li { padding: 7px 0; color: var(--text-soft); font-size: 0.88rem; display: flex; align-items: center; gap: 10px; }
+.price-features li::before { content: '✓'; color: var(--copper); font-weight: 700; }
+.btn-price {
+  display: block; width: 100%; padding: 14px; border-radius: 10px; text-align: center;
+  text-decoration: none; font-weight: 600; font-size: 0.95rem; font-family: var(--sans); transition: all 0.3s; border: none; cursor: pointer;
+}
+.btn-price-primary { background: var(--copper); color: #0e0e10; }
+.btn-price-primary:hover { background: var(--copper-hi); }
+.btn-price-outline { background: transparent; color: var(--text-soft); border: 1px solid var(--border); }
+.btn-price-outline:hover { border-color: var(--copper); color: var(--copper); }
+.price-note { text-align: center; margin-top: 32px; color: var(--text-dim); font-size: 0.85rem; }
+
+/* ── FAQ ────────────────────────────────────────── */
+.faq { padding: 120px 0; background: var(--bg2); }
+.faq-grid { max-width: 720px; margin: 0 auto; }
+.faq-item { border-bottom: 1px solid var(--border); }
+.faq-q {
+  width: 100%; background: none; border: none; color: var(--text); font-family: var(--sans);
+  font-size: 1.02rem; font-weight: 500; padding: 22px 0; text-align: left; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.faq-q::after { content: '+'; font-size: 1.3rem; color: var(--copper); transition: transform 0.3s; }
+.faq-item.open .faq-q::after { transform: rotate(45deg); }
+.faq-a { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+.faq-item.open .faq-a { max-height: 300px; padding-bottom: 20px; }
+.faq-a p { color: var(--text-soft); font-size: 0.92rem; line-height: 1.8; font-weight: 300; }
+
+/* ── Final CTA ──────────────────────────────────── */
+.cta {
+  padding: 120px 0; text-align: center;
+  background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(196,149,106,0.08), transparent 70%);
+}
+.cta h2 { font-family: var(--serif); font-size: clamp(1.8rem, 3.5vw, 2.8rem); margin-bottom: 20px; letter-spacing: -0.02em; }
+.cta p { color: var(--text-soft); font-size: 1.05rem; margin-bottom: 40px; font-weight: 300; max-width: 500px; margin-left: auto; margin-right: auto; margin-bottom: 40px; }
+
+/* ── Footer ─────────────────────────────────────── */
+footer { padding: 40px 0; border-top: 1px solid var(--border); }
+.foot-inner { display: flex; justify-content: space-between; align-items: center; }
+.foot-left { color: var(--text-dim); font-size: 0.82rem; }
+.foot-links { display: flex; gap: 24px; }
+.foot-links a { color: var(--text-dim); text-decoration: none; font-size: 0.82rem; transition: color 0.2s; }
+.foot-links a:hover { color: var(--copper); }
+
+/* ── Responsive ─────────────────────────────────── */
+@media (max-width: 900px) {
+  .nav-links { display: none; }
+  .pain-items { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+  .features-grid { grid-template-columns: 1fr; }
+  .pricing-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+  .mockup-content { grid-template-columns: 1fr; }
+  .mockup-sidebar { display: none; }
+  .foot-inner { flex-direction: column; gap: 12px; text-align: center; }
+  .download-btns { flex-direction: column; align-items: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="container nav-inner">
+    <a href="#" class="nav-logo"><img src="logo.png" alt="Monik"><span class="nav-logo-text">Monik</span></a>
+    <div class="nav-links">
+      <a href="#how">How It Works</a>
+      <a href="#features">Features</a>
+      <a href="#download">Download</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+      <a href="#download" class="btn-nav">Download Free</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <!-- Background video — replace src with your stock video file -->
+  <video class="hero-video" autoplay muted loop playsinline poster="">
+    <source src="hero-bg.mp4" type="video/mp4">
+  </video>
+  <div class="hero-overlay"></div>
+  <div class="container">
+    <div class="reveal">
+      <div class="hero-logo"><img src="logo.png" alt="Monik"></div>
+      <div class="hero-logo-sub">monik</div>
+    </div>
+    <h1 class="reveal reveal-delay-1">You didn't start your business to <em>drown in paperwork</em></h1>
+    <p class="hero-sub reveal reveal-delay-2">Monik is an AI assistant that lives on your desktop. It watches how you work, learns your repetitive tasks, and runs them while you focus on what actually grows your business.</p>
+    <div class="hero-ctas reveal reveal-delay-3">
+      <a href="#download" class="btn-primary">Download Monik — Free to Try</a>
+      <a href="#how" class="btn-secondary">See How It Works</a>
+    </div>
+    <div class="hero-visual reveal reveal-delay-4">
+      <div class="mockup">
+        <div class="mockup-bar"><div class="mockup-dot"></div><div class="mockup-dot"></div><div class="mockup-dot"></div></div>
+        <div class="mockup-content">
+          <div class="mockup-sidebar">
+            <div class="mockup-sidebar-item">🏠 Home</div>
+            <div class="mockup-sidebar-item active">📊 Dashboard</div>
+            <div class="mockup-sidebar-item">🧠 Brain</div>
+            <div class="mockup-sidebar-item">📋 My Tasks</div>
+            <div class="mockup-sidebar-item">📄 SOP Generator</div>
+            <div class="mockup-sidebar-item">⚙️ Settings</div>
+          </div>
+          <div class="mockup-main">
+            <div class="mockup-status">
+              <span class="mockup-status-text">● BRAIN: OBSERVING — Learning your workflow…</span>
+              <div class="mockup-status-dot"></div>
+            </div>
+            <div class="mockup-cards">
+              <div class="mockup-card"><div class="mockup-card-label">Tasks Learned</div><div class="mockup-card-value">12</div></div>
+              <div class="mockup-card"><div class="mockup-card-label">Auto Runs</div><div class="mockup-card-value">47</div></div>
+              <div class="mockup-card"><div class="mockup-card-label">Time Saved</div><div class="mockup-card-value">8.5h</div></div>
+              <div class="mockup-card"><div class="mockup-card-label">API Saved</div><div class="mockup-card-value">62%</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="container">
+    <div class="section-tag reveal">How It Works</div>
+    <h2 class="section-title reveal">Three steps. Zero coding.</h2>
+    <div class="steps">
+      <div class="step reveal reveal-delay-1">
+        <div class="step-number">1</div>
+        <div class="step-icon">🧠</div>
+        <h3>Turn on the Brain</h3>
+        <p>Click one button and work normally. Monik watches your screen — capturing screenshots at every click and keystroke — building a visual timeline of your workflow.</p>
+      </div>
+      <div class="step reveal reveal-delay-2">
+        <div class="step-number">2</div>
+        <div class="step-icon">⚡</div>
+        <h3>It Learns Your Tasks</h3>
+        <p>After seeing you do a task a few times, Monik identifies the pattern, extracts the steps, and compiles them into an executable task. Or click Teach to show it once.</p>
+      </div>
+      <div class="step reveal reveal-delay-3">
+        <div class="step-number">3</div>
+        <div class="step-icon">🤖</div>
+        <h3>Walk Away</h3>
+        <p>Leave your desk. Monik detects you're gone, switches to autonomous mode, and starts running your learned tasks. Come back to find the work done and documented.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAIN -->
+<section class="pain">
+  <div class="container">
+    <div class="pain-inner">
+      <div class="pain-tag reveal">Sound familiar?</div>
+      <h2 class="reveal">The reality of running a small business nobody talks about</h2>
+    </div>
+    <div class="pain-items" style="max-width:760px; margin: 32px auto 0;">
+      <div class="pain-item reveal reveal-delay-1">
+        <h4>You can't find good help</h4>
+        <p>Hiring an office assistant costs $35K+ per year — if you can even find one. And training them takes months. Half of them leave within a year.</p>
+      </div>
+      <div class="pain-item reveal reveal-delay-2">
+        <h4>Your evenings belong to paperwork</h4>
+        <p>Invoices, data entry, form filling, report generation. It piles up during the day and follows you home at night.</p>
+      </div>
+      <div class="pain-item reveal reveal-delay-3">
+        <h4>You're the bottleneck</h4>
+        <p>Every process lives in your head. If you step away, nothing moves. You can't delegate what's never been documented.</p>
+      </div>
+      <div class="pain-item reveal reveal-delay-4">
+        <h4>Growth is on hold</h4>
+        <p>You have ideas, leads, and opportunities — but you're stuck in the weeds. There's no time to think strategically when you're copying data between spreadsheets.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IMAGINE -->
+<section class="imagine">
+  <div class="container">
+    <div class="imagine-inner">
+      <div class="imagine-tag reveal">What if</div>
+      <h2 class="reveal">What if the boring stuff just… got done?</h2>
+      <p class="imagine-text reveal reveal-delay-1">Imagine walking into your office and your invoices are already processed. Your data is entered. Your reports are generated. Not because you hired someone — but because your computer learned how you do it, and kept going while you were having dinner with your family.</p>
+      <p class="imagine-text reveal reveal-delay-2">Imagine having professional procedure documents for every task in your business — created automatically, with screenshots — ready to hand to a new hire on day one.</p>
+      <p class="imagine-text reveal reveal-delay-3">Imagine finally having time to call that prospect back. To work on your marketing. To think about where your business is going — instead of where the invoices are.</p>
+      <div class="imagine-quote reveal reveal-delay-4">"I didn't hire an assistant. I installed one."</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="container">
+    <div class="section-tag reveal">Features</div>
+    <h2 class="section-title reveal">Built for business owners, not engineers</h2>
+    <div class="features-grid">
+      <div class="feature reveal reveal-delay-1">
+        <span class="feature-icon">👁</span>
+        <h3>Visual Timeline</h3>
+        <p>Captures a screenshot at every click. Sends up to 15 frames per analysis to Claude AI for deep workflow understanding — not just the final screen.</p>
+      </div>
+      <div class="feature reveal reveal-delay-2">
+        <span class="feature-icon">🎓</span>
+        <h3>Teach Button</h3>
+        <p>Don't want to wait? Click Teach, do the task once, add notes. Monik learns it immediately. Perfect for tasks you do weekly or monthly.</p>
+      </div>
+      <div class="feature reveal reveal-delay-3">
+        <span class="feature-icon">📄</span>
+        <h3>SOP Generator</h3>
+        <p>One-click procedure documents with screenshots. Export as Word or HTML. Hand them to a new hire. Meet compliance requirements. No writing needed.</p>
+      </div>
+      <div class="feature reveal reveal-delay-1">
+        <span class="feature-icon">🔒</span>
+        <h3>Smart Pausing</h3>
+        <p>Knows when your screen is locked, when nothing's changed, when you're in a meeting. Pauses automatically. No wasted resources.</p>
+      </div>
+      <div class="feature reveal reveal-delay-2">
+        <span class="feature-icon">🌍</span>
+        <h3>12 Languages</h3>
+        <p>Full interface in English, French, Spanish, German, Chinese, Hindi, Portuguese, Japanese, Korean, Arabic, Russian, and Italian.</p>
+      </div>
+      <div class="feature reveal reveal-delay-3">
+        <span class="feature-icon">📧</span>
+        <h3>Email Alerts</h3>
+        <p>Get notified when tasks complete, when errors happen, or when Monik learns something new. Daily digests keep you informed.</p>
+      </div>
+      <div class="feature reveal reveal-delay-1">
+        <span class="feature-icon">💾</span>
+        <h3>Portable Knowledge</h3>
+        <p>Export everything as a backup package. Move to a new computer. Your automation goes with you. Your processes are yours forever.</p>
+      </div>
+      <div class="feature reveal reveal-delay-2">
+        <span class="feature-icon">🖥️</span>
+        <h3>Multi-Monitor</h3>
+        <p>Works across all your screens. Captures the full desktop. Handles complex workflows that span multiple windows and applications.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOAD -->
+<section class="download" id="download">
+  <div class="container">
+    <div class="download-inner">
+      <div class="section-tag reveal">Download</div>
+      <h2 class="section-title reveal" style="margin-bottom:12px;">Get Monik for your computer</h2>
+      <p class="reveal reveal-delay-1" style="color:var(--text-soft); font-weight:300; font-size: 1rem;">Works on Windows 10+ and macOS 12+. Requires an active license.</p>
+      <div class="download-btns reveal reveal-delay-2">
+        <a href="https://drive.google.com/uc?export=download&id=1Bp_40hwkHIy_ypL7X5AuGMjZKHlqrOmp" class="dl-btn dl-btn-win">
+          <div class="dl-icon">⊞</div>
+          <div class="dl-text">
+            <div class="dl-text-main">Download for Windows</div>
+            <div class="dl-text-sub">Windows 10, 11 — 64-bit</div>
+          </div>
+        </a>
+        <a href="https://drive.google.com/uc?export=download&id=19dfZq-s-AQLSjbrPR8QwVKIYyW7hFWZh" class="dl-btn dl-btn-mac">
+          <div class="dl-icon">⌘</div>
+          <div class="dl-text">
+            <div class="dl-text-main">Download for Mac</div>
+            <div class="dl-text-sub">macOS 12 Monterey and later</div>
+          </div>
+        </a>
+      </div>
+      <p class="download-note reveal reveal-delay-3">After downloading, purchase a license below to activate all features.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="container">
+    <div class="section-tag reveal">Pricing</div>
+    <h2 class="section-title reveal">Less than the cost of one hour of office help per week</h2>
+    <div class="pricing-toggle reveal">
+      <button class="toggle-btn active" onclick="showPlans('regular')">Regular</button>
+      <button class="toggle-btn" onclick="showPlans('business')">Business</button>
+    </div>
+
+    <div class="pricing-grid reveal" id="plans-regular">
+      <div class="price-card">
+        <div class="price-name">Basic</div>
+        <div class="price-desc">Getting started</div>
+        <div class="price-amount">$39<span> USD/mo</span></div>
+        <ul class="price-features">
+          <li>100 observations / day</li>
+          <li>Unlimited task learning</li>
+          <li>Autonomous mode</li>
+          <li>12 languages</li>
+          <li>Teach button</li>
+        </ul>
+        <a href="https://buy.polar.sh/polar_cl_GMkAUtm8TuZPQgXEsvmp13B9OxAmuHZeUygNX2Kcl5G" class="btn-price btn-price-outline">Get Basic</a>
+      </div>
+      <div class="price-card popular">
+        <div class="price-name">Regular</div>
+        <div class="price-desc">Most popular for daily use</div>
+        <div class="price-amount">$89<span> USD/mo</span></div>
+        <ul class="price-features">
+          <li>250 observations / day</li>
+          <li>Unlimited task learning</li>
+          <li>Autonomous mode</li>
+          <li>12 languages</li>
+          <li>Teach button</li>
+        </ul>
+        <a href="https://buy.polar.sh/polar_cl_N4TnJ7sD8rOjMigGaknp2NOULKLoU5znDSsIW0f2arU" class="btn-price btn-price-primary">Get Regular</a>
+      </div>
+      <div class="price-card">
+        <div class="price-name">Pro</div>
+        <div class="price-desc">Power users</div>
+        <div class="price-amount">$179<span> USD/mo</span></div>
+        <ul class="price-features">
+          <li>500 observations / day</li>
+          <li>Unlimited task learning</li>
+          <li>Autonomous mode</li>
+          <li>12 languages</li>
+          <li>Teach button</li>
+        </ul>
+        <a href="https://buy.polar.sh/polar_cl_JPw9fsKRkB14T9A3etB6LHgjHS6ciTdXz8nbM2bekXs" class="btn-price btn-price-outline">Get Pro</a>
+      </div>
+    </div>
+
+    <div class="pricing-grid reveal" id="plans-business" style="display:none;">
+      <div class="price-card">
+        <div class="price-name">Basic</div>
+        <div class="price-desc">Small teams</div>
+        <div class="price-amount">$59<span> USD/mo</span></div>
+        <ul class="price-features">
+          <li>100 observations / day</li>
+          <li>Everything in Regular, plus:</li>
+          <li>SOP Document Generator</li>
+          <li>Email alerts & digests</li>
+          <li>Word & HTML export</li>
+        </ul>
+        <a href="https://buy.polar.sh/polar_cl_iaLIKbhlB6TyHd7qRVju0hmteWDkrFdZ2rfGn0j90m0" class="btn-price btn-price-outline">Get Business Basic</a>
+      </div>
+      <div class="price-card popular">
+        <div class="price-name">Business</div>
+        <div class="price-desc">The complete package</div>
+        <div class="price-amount">$129<span> USD/mo</span></div>
+        <ul class="price-features">
+          <li>250 observations / day</li>
+          <li>Everything in Regular, plus:</li>
+          <li>SOP Document Generator</li>
+          <li>Email alerts & digests</li>
+          <li>Word & HTML export</li>
+        </ul>
+        <a href="https://buy.polar.sh/polar_cl_K0hFHyoO2yLTct29AqzOyLLO5Di4gTKO25TWY4aWcow" class="btn-price btn-price-primary">Get Business</a>
+      </div>
+      <div class="price-card">
+        <div class="price-name">Business Pro</div>
+        <div class="price-desc">Maximum capacity</div>
+        <div class="price-amount">$269<span> USD/mo</span></div>
+        <ul class="price-features">
+          <li>750 observations / day</li>
+          <li>Everything in Regular, plus:</li>
+          <li>SOP Document Generator</li>
+          <li>Email alerts & digests</li>
+          <li>Word & HTML export</li>
+        </ul>
+        <a href="https://buy.polar.sh/polar_cl_yOMZfoUzIkbGF78vYO5QGvLGLuNLz8kg5ZEAj2vUF3m" class="btn-price btn-price-outline">Get Business Pro</a>
+      </div>
+    </div>
+    <p class="price-note reveal">All prices in USD. Single-machine license. Cancel anytime.</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="container">
+    <div class="section-tag reveal">FAQ</div>
+    <h2 class="section-title reveal">Common questions</h2>
+    <div class="faq-grid">
+      <div class="faq-item reveal"><button class="faq-q">What can Monik actually automate?</button><div class="faq-a"><p>Any repetitive desktop task you do with a mouse and keyboard: processing invoices, entering data between apps, filling forms, generating reports, organizing files, sending routine emails. If you click and type it repeatedly, Monik can learn it.</p></div></div>
+      <div class="faq-item reveal"><button class="faq-q">Do I need to know how to code?</button><div class="faq-a"><p>Not at all. Monik learns by watching you work. There's nothing to configure, script, or program. Just click the Brain button and do your work normally. You can also use the Teach button to demonstrate a task in one go.</p></div></div>
+      <div class="faq-item reveal"><button class="faq-q">Is my screen data safe?</button><div class="faq-a"><p>Task data is stored locally on your machine — never on our servers. Screen captures are sent to Claude AI for analysis through encrypted connections and are not retained by the AI provider after processing.</p></div></div>
+      <div class="faq-item reveal"><button class="faq-q">What happens when I walk away from my desk?</button><div class="faq-a"><p>After 3 minutes of no activity, Monik switches to autonomous mode. It looks at what's on your screen, decides which learned task to run, and executes it. When you return, you see a log of everything it did.</p></div></div>
+      <div class="faq-item reveal"><button class="faq-q">Does it work on Mac and Windows?</button><div class="faq-a"><p>Yes. Monik builds natively for both Windows (.exe) and macOS (.app). Download the right version for your system from the download section above.</p></div></div>
+      <div class="faq-item reveal"><button class="faq-q">What's the difference between Regular and Business?</button><div class="faq-a"><p>Regular plans include all automation features: Brain observation, task learning, autonomous execution, Teach button, and 12 languages. Business plans add SOP document generation (export to Word and HTML), email alerts and daily digests, and priority support.</p></div></div>
+      <div class="faq-item reveal"><button class="faq-q">How is this different from RPA tools?</button><div class="faq-a"><p>Traditional RPA tools require you to program every step manually, hire consultants, and maintain brittle scripts. Monik learns by watching you — no flowcharts, no scripting, no IT department. It's automation that works like training a new employee: show, don't tell.</p></div></div>
+      <div class="faq-item reveal"><button class="faq-q">Can I cancel anytime?</button><div class="faq-a"><p>Yes. All plans are monthly with no contract. Cancel anytime through your Polar account. Your learned tasks and data stay on your machine even after canceling.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="cta">
+  <div class="container">
+    <h2 class="reveal">Your business deserves your best hours</h2>
+    <p class="reveal reveal-delay-1">Stop giving them to spreadsheets. Let Monik handle the repetitive work so you can focus on customers, growth, and the reason you started.</p>
+    <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;" class="reveal reveal-delay-2">
+      <a href="#download" class="btn-primary">Download Monik →</a>
+      <a href="#pricing" class="btn-secondary">View Pricing</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container foot-inner">
+    <div class="foot-left">© 2026 Monik — heymonik.com. Powered by Claude AI.</div>
+    <div class="foot-links">
+      <a href="mailto:support@heymonik.com">Support</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#download">Download</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
+});
+
+document.querySelectorAll('.faq-q').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.parentElement;
+    document.querySelectorAll('.faq-item').forEach(i => { if (i !== item) i.classList.remove('open'); });
+    item.classList.toggle('open');
+  });
+});
+
+function showPlans(tier) {
+  document.getElementById('plans-regular').style.display = tier === 'regular' ? 'grid' : 'none';
+  document.getElementById('plans-business').style.display = tier === 'business' ? 'grid' : 'none';
+  document.querySelectorAll('.toggle-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.toLowerCase() === tier);
+  });
+}
+</script>
+</body>
+</html>
+
+<script>
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
+});
+
+document.querySelectorAll('.faq-q').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.parentElement;
+    document.querySelectorAll('.faq-item').forEach(i => { if (i !== item) i.classList.remove('open'); });
+    item.classList.toggle('open');
+  });
+});
+
+function showPlans(tier) {
+  document.getElementById('plans-regular').style.display = tier === 'regular' ? 'grid' : 'none';
+  document.getElementById('plans-business').style.display = tier === 'business' ? 'grid' : 'none';
+  document.querySelectorAll('.toggle-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.toLowerCase() === tier);
+  });
+}
+</script>
+</body>
+</html>
