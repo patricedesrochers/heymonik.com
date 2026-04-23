@@ -529,96 +529,47 @@ footer { padding: 40px 0; border-top: 1px solid var(--border); }
 <section class="pricing" id="pricing">
   <div class="container">
     <div class="section-tag reveal">Pricing</div>
-    <h2 class="section-title reveal">Less than the cost of one hour of office help per week</h2>
-    <div class="pricing-toggle reveal">
-      <button class="toggle-btn active" onclick="showPlans('regular')">Regular</button>
-      <button class="toggle-btn" onclick="showPlans('business')">Business</button>
-    </div>
+    <h2 class="section-title reveal">Simple pricing. You control your AI costs.</h2>
+    <p class="section-subtitle reveal" style="text-align:center; max-width:720px; margin:0 auto 48px; color:var(--text-soft);">
+      Monik uses <strong>Bring Your Own Key</strong> — you connect your own Anthropic, OpenAI, or Google account.
+      You pay the AI provider directly for what you use (typically $10–30/month) and nothing more to us beyond the flat license.
+      No surprise bills, no daily caps, full transparency.
+    </p>
 
-    <div class="pricing-grid reveal" id="plans-regular">
+    <div class="pricing-grid reveal" id="plans-regular" style="grid-template-columns: repeat(2, 1fr); max-width: 720px; margin: 0 auto;">
       <div class="price-card">
-        <div class="price-name">Basic</div>
-        <div class="price-desc">Getting started</div>
+        <div class="price-name">Regular</div>
+        <div class="price-desc">Everything you need to automate</div>
         <div class="price-amount">$39<span> USD/mo</span></div>
         <ul class="price-features">
-          <li>100 observations / day</li>
-          <li>Unlimited task learning</li>
-          <li>Autonomous mode</li>
+          <li>Unlimited task learning (Brain)</li>
+          <li>Unlimited autonomous runs</li>
+          <li>Voice narration (Teach button)</li>
+          <li>OCR-first data reading</li>
           <li>12 languages</li>
-          <li>Teach button</li>
+          <li>Multi-monitor support</li>
+          <li>Bring your own AI key (BYOK)</li>
         </ul>
-        <a href="https://buy.polar.sh/polar_cl_GMkAUtm8TuZPQgXEsvmp13B9OxAmuHZeUygNX2Kcl5G" class="btn-price btn-price-outline">Get Basic</a>
-      </div>
-      <div class="price-card popular">
-        <div class="price-name">Regular</div>
-        <div class="price-desc">Most popular for daily use</div>
-        <div class="price-amount">$89<span> USD/mo</span></div>
-        <ul class="price-features">
-          <li>250 observations / day</li>
-          <li>Unlimited task learning</li>
-          <li>Autonomous mode</li>
-          <li>12 languages</li>
-          <li>Teach button</li>
-        </ul>
-        <a href="https://buy.polar.sh/polar_cl_N4TnJ7sD8rOjMigGaknp2NOULKLoU5znDSsIW0f2arU" class="btn-price btn-price-primary">Get Regular</a>
-      </div>
-      <div class="price-card">
-        <div class="price-name">Pro</div>
-        <div class="price-desc">Power users</div>
-        <div class="price-amount">$179<span> USD/mo</span></div>
-        <ul class="price-features">
-          <li>500 observations / day</li>
-          <li>Unlimited task learning</li>
-          <li>Autonomous mode</li>
-          <li>12 languages</li>
-          <li>Teach button</li>
-        </ul>
-        <a href="https://buy.polar.sh/polar_cl_JPw9fsKRkB14T9A3etB6LHgjHS6ciTdXz8nbM2bekXs" class="btn-price btn-price-outline">Get Pro</a>
-      </div>
-    </div>
-
-    <div class="pricing-grid reveal" id="plans-business" style="display:none;">
-      <div class="price-card">
-        <div class="price-name">Basic</div>
-        <div class="price-desc">Small teams</div>
-        <div class="price-amount">$59<span> USD/mo</span></div>
-        <ul class="price-features">
-          <li>100 observations / day</li>
-          <li>Everything in Regular, plus:</li>
-          <li>SOP Document Generator</li>
-          <li>Email alerts & digests</li>
-          <li>Word & HTML export</li>
-        </ul>
-        <a href="https://buy.polar.sh/polar_cl_iaLIKbhlB6TyHd7qRVju0hmteWDkrFdZ2rfGn0j90m0" class="btn-price btn-price-outline">Get Business Basic</a>
+        <a href="https://buy.polar.sh/polar_cl_N4TnJ7sD8rOjMigGaknp2NOULKLoU5znDSsIW0f2arU" class="btn-price btn-price-outline">Get Regular</a>
       </div>
       <div class="price-card popular">
         <div class="price-name">Business</div>
-        <div class="price-desc">The complete package</div>
-        <div class="price-amount">$129<span> USD/mo</span></div>
+        <div class="price-desc">For teams that document everything</div>
+        <div class="price-amount">$69<span> USD/mo</span></div>
         <ul class="price-features">
-          <li>250 observations / day</li>
           <li>Everything in Regular, plus:</li>
           <li>SOP Document Generator</li>
-          <li>Email alerts & digests</li>
           <li>Word & HTML export</li>
+          <li>Email alerts & daily digests</li>
+          <li>Task library sharing</li>
         </ul>
-        <a href="https://buy.polar.sh/polar_cl_K0hFHyoO2yLTct29AqzOyLLO5Di4gTKO25TWY4aWcow" class="btn-price btn-price-primary">Get Business</a>
-      </div>
-      <div class="price-card">
-        <div class="price-name">Business Pro</div>
-        <div class="price-desc">Maximum capacity</div>
-        <div class="price-amount">$269<span> USD/mo</span></div>
-        <ul class="price-features">
-          <li>750 observations / day</li>
-          <li>Everything in Regular, plus:</li>
-          <li>SOP Document Generator</li>
-          <li>Email alerts & digests</li>
-          <li>Word & HTML export</li>
-        </ul>
-        <a href="https://buy.polar.sh/polar_cl_yOMZfoUzIkbGF78vYO5QGvLGLuNLz8kg5ZEAj2vUF3m" class="btn-price btn-price-outline">Get Business Pro</a>
+        <a href="https://buy.polar.sh/polar_cl_yOMZfoUzIkbGF78vYO5QGvLGLuNLz8kg5ZEAj2vUF3m" class="btn-price btn-price-primary">Get Business</a>
       </div>
     </div>
-    <p class="price-note reveal">All prices in USD. Single-machine license. Cancel anytime.</p>
+
+    <p class="price-note reveal" style="margin-top: 32px;">
+      All prices in USD. Single-machine license. Cancel anytime. You bring your own AI key (Anthropic, OpenAI, or Google Gemini).
+    </p>
   </div>
 </section>
 
@@ -630,10 +581,12 @@ footer { padding: 40px 0; border-top: 1px solid var(--border); }
     <div class="faq-grid">
       <div class="faq-item reveal"><button class="faq-q">What can Monik actually automate?</button><div class="faq-a"><p>Any repetitive desktop task you do with a mouse and keyboard: processing invoices, entering data between apps, filling forms, generating reports, organizing files, sending routine emails. If you click and type it repeatedly, Monik can learn it.</p></div></div>
       <div class="faq-item reveal"><button class="faq-q">Do I need to know how to code?</button><div class="faq-a"><p>Not at all. Monik learns by watching you work. There's nothing to configure, script, or program. Just click the Brain button and do your work normally. You can also use the Teach button to demonstrate a task in one go.</p></div></div>
-      <div class="faq-item reveal"><button class="faq-q">Is my screen data safe?</button><div class="faq-a"><p>Task data is stored locally on your machine — never on our servers. Screen captures are sent to Claude AI for analysis through encrypted connections and are not retained by the AI provider after processing.</p></div></div>
+      <div class="faq-item reveal"><button class="faq-q">What is "Bring Your Own Key" and why do I need it?</button><div class="faq-a"><p>Monik uses AI to understand what you do, so it needs an AI account. Instead of bundling AI costs into our price and marking them up, we let you bring your own API key from Anthropic, OpenAI, or Google Gemini. You pay the AI provider directly at cost (typically $10–30/month of usage). This keeps Monik affordable, transparent, and gives you full control over your AI spending.</p></div></div>
+      <div class="faq-item reveal"><button class="faq-q">How do I get an AI API key?</button><div class="faq-a"><p>It takes 2 minutes. Sign up for free at <strong>console.anthropic.com</strong> (recommended), <strong>platform.openai.com</strong>, or <strong>aistudio.google.com</strong>. Add a credit card for pay-as-you-go billing, copy your API key, and paste it into Monik during setup. Google Gemini even has a free tier if you want to try it at zero cost.</p></div></div>
+      <div class="faq-item reveal"><button class="faq-q">Is my screen data safe?</button><div class="faq-a"><p>Task data is stored locally on your machine — never on our servers. Screen captures go directly from your computer to your chosen AI provider (Anthropic, OpenAI, or Google) through their encrypted API. We never see your data, and AI providers don't retain it after processing.</p></div></div>
       <div class="faq-item reveal"><button class="faq-q">What happens when I walk away from my desk?</button><div class="faq-a"><p>After 3 minutes of no activity, Monik switches to autonomous mode. It looks at what's on your screen, decides which learned task to run, and executes it. When you return, you see a log of everything it did.</p></div></div>
       <div class="faq-item reveal"><button class="faq-q">Does it work on Mac and Windows?</button><div class="faq-a"><p>Yes. Monik builds natively for both Windows (.exe) and macOS (.app). Download the right version for your system from the download section above.</p></div></div>
-      <div class="faq-item reveal"><button class="faq-q">What's the difference between Regular and Business?</button><div class="faq-a"><p>Regular plans include all automation features: Brain observation, task learning, autonomous execution, Teach button, and 12 languages. Business plans add SOP document generation (export to Word and HTML), email alerts and daily digests, and priority support.</p></div></div>
+      <div class="faq-item reveal"><button class="faq-q">What's the difference between Regular and Business?</button><div class="faq-a"><p>Regular ($39/mo) includes all core automation: Brain observation, task learning, autonomous execution, Teach button with voice narration, OCR data reading, and 12 languages. Business ($69/mo) adds SOP document generation (Word/HTML export), email alerts, and daily digests for teams that need to document workflows.</p></div></div>
       <div class="faq-item reveal"><button class="faq-q">How is this different from RPA tools?</button><div class="faq-a"><p>Traditional RPA tools require you to program every step manually, hire consultants, and maintain brittle scripts. Monik learns by watching you — no flowcharts, no scripting, no IT department. It's automation that works like training a new employee: show, don't tell.</p></div></div>
       <div class="faq-item reveal"><button class="faq-q">Can I cancel anytime?</button><div class="faq-a"><p>Yes. All plans are monthly with no contract. Cancel anytime through your Polar account. Your learned tasks and data stay on your machine even after canceling.</p></div></div>
     </div>
@@ -682,13 +635,6 @@ document.querySelectorAll('.faq-q').forEach(btn => {
   });
 });
 
-function showPlans(tier) {
-  document.getElementById('plans-regular').style.display = tier === 'regular' ? 'grid' : 'none';
-  document.getElementById('plans-business').style.display = tier === 'business' ? 'grid' : 'none';
-  document.querySelectorAll('.toggle-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.textContent.toLowerCase() === tier);
-  });
-}
 </script>
 </body>
 </html>
@@ -710,14 +656,6 @@ document.querySelectorAll('.faq-q').forEach(btn => {
     item.classList.toggle('open');
   });
 });
-
-function showPlans(tier) {
-  document.getElementById('plans-regular').style.display = tier === 'regular' ? 'grid' : 'none';
-  document.getElementById('plans-business').style.display = tier === 'business' ? 'grid' : 'none';
-  document.querySelectorAll('.toggle-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.textContent.toLowerCase() === tier);
-  });
-}
 </script>
 </body>
 </html>
